@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>TogoRevise</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,sans-serif;background:#f0f4f8;}header{background:linear-gradient(135deg,#006a4e,#fcdd09);padding:20px;text-align:center;}.logo{font-size:28px;font-weight:bold;color:white;}.tagline{color:white;font-size:13px;margin-top:5px;}main{max-width:600px;margin:0 auto;padding:15px;}.card{background:white;border-radius:12px;padding:20px;margin:15px 0;box-shadow:0 2px 10px rgba(0,0,0,0.1);}h2{color:#006a4e;font-size:18px;margin-bottom:15px;}.filieres{display:flex;flex-wrap:wrap;gap:10px;}.fil-btn{padding:12px 18px;border:2px solid #006a4e;border-radius:10px;background:white;color:#006a4e;font-size:14px;cursor:pointer;font-weight:bold;}.fil-btn.actif,.fil-btn:hover{background:#006a4e;color:white;}.question{font-size:16px;color:#333;margin-bottom:20px;line-height:1.6;font-weight:bold;}.options{display:flex;flex-direction:column;gap:10px;}.opt{padding:14px;border:2px solid #e0e0e0;border-radius:10px;background:white;font-size:14px;cursor:pointer;text-align:left;}.opt:hover{border-color:#006a4e;}.opt.correct{background:#d4edda;border-color:#28a745;color:#155724;}.opt.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24;}.score-box{text-align:center;padding:20px;}.score-num{font-size:60px;font-weight:bold;color:#006a4e;}.btn{background:#006a4e;color:white;border:none;padding:14px 30px;border-radius:10px;font-size:16px;cursor:pointer;margin-top:15px;}.btn-red{background:#dc3545;}.progress{background:#e0e0e0;border-radius:10px;height:10px;margin-bottom:20px;}.progress-bar{background:#006a4e;height:10px;border-radius:10px;transition:width 0.3s;}.explication{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px;margin-top:12px;font-size:13px;color:#856404;display:none;}.timer{text-align:center;font-size:22px;font-weight:bold;color:#006a4e;margin-bottom:15px;}footer{text-align:center;padding:20px;color:#666;font-size:13px;}</style></head><body>
+<header><div class="logo">🎓 TogoRevise</div><p class="tagline">Révise intelligemment - Réussis tes examens</p></header>
+<main>
+<div id="accueil">
+<div class="card"><h2>🎯 Choisis ta filière</h2><div class="filieres">
+<button class="fil-btn" onclick="choisirFiliere('Informatique')">💻 Informatique</button>
+<button class="fil-btn" onclick="choisirFiliere('Medecine')">🏥 Médecine</button>
+<button class="fil-btn" onclick="choisirFiliere('Droit')">⚖️ Droit</button>
+<button class="fil-btn" onclick="choisirFiliere('Economie')">📊 Économie</button>
+<button class="fil-btn" onclick="choisirFiliere('Mathematiques')">📐 Maths</button>
+<button class="fil-btn" onclick="choisirFiliere('CultureGenerale')">🌍 Culture G.</button>
+</div></div>
+<div class="card"><h2>📖 Pourquoi TogoRevise ?</h2><p style="color:#555;line-height:1.7;font-size:14px;">TogoRevise aide les étudiants togolais à préparer leurs examens avec des QCM interactifs, un chronomètre et des explications détaillées. Choisis ta filière et commence !</p></div>
+</div>
+<div id="quiz" style="display:none;"><div class="card">
+<div class="timer" id="timer">⏱️ 30s</div>
+<div class="progress"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+<p style="color:#999;font-size:13px;margin-bottom:10px;" id="qnum">Question 1/5</p>
+<div class="question" id="questionText"></div>
+<div class="options" id="optionsDiv"></div>
+<div class="explication" id="explication"></div>
+<div style="text-align:center;margin-top:15px;"><button class="btn" id="btnSuivant" onclick="suivant()" style="display:none;">Question suivante ➡️</button></div>
+</div></div>
+<div id="resultat" style="display:none;"><div class="card score-box">
+<div style="font-size:50px;">🏆</div>
+<div class="score-num" id="scoreNum">0/5</div>
+<div style="font-size:16px;color:#666;margin-top:10px;" id="scoreTxt"></div>
+<div style="margin-top:20px;">
+<button class="btn" onclick="rejouer()">🔄 Rejouer</button>
+<button class="btn btn-red" onclick="retourAccueil()" style="margin-left:10px;">🏠 Changer filière</button>
+</div></div></div>
+</main>
+<footer>🇹🇬 TogoRevise — Fait avec ❤️ pour les étudiants du Togo</footer>
+<script>
+var Q={
+Informatique:[
+{q:"Quel est le rôle principal d'un système d'exploitation ?",opts:["Gérer les ressources matérielles","Naviguer sur internet","Créer des documents","Jouer des vidéos"],rep:0,exp:"Le système d'exploitation gère les ressources matérielles : processeur, mémoire, périphériques."},
+{q:"Que signifie HTML ?",opts:["Langage de Balisage HyperTexte","Outil Maison Technologie","Liens Modernes HyperTexte","Haut Niveau Technique"],rep:0,exp:"HTML signifie HyperText Markup Language, le langage de base des pages web."},
+{q:"Quelle structure fonctionne en mode LIFO ?",opts:["File d'attente","Tableau","Pile","Liste chaînée"],rep:2,exp:"La Pile fonctionne en LIFO — le dernier élément ajouté est le premier retiré."},
+{q:"Qu'est-ce qu'un algorithme ?",opts:["Un langage de programmation","Une suite d'instructions pour résoudre un problème","Un type de processeur","Un système de fichiers"],rep:1,exp:"Un algorithme est une suite finie d'instructions pour résoudre un problème donné."},
+{q:"Que signifie CSS ?",opts:["Feuilles de Style en Cascade","Système de Style Créatif","Styles de Site Colorés","Code de Style Simple"],rep:0,exp:"CSS signifie Cascading Style Sheets — utilisé pour mettre en forme les pages web."}
+],
+Medecine:[
+{q:"Quel organe produit l'insuline ?",opts:["Le foie","Le rein","Le pancréas","L'estomac"],rep:2,exp:"Le pancréas produit l'insuline qui régule le taux de sucre dans le sang."},
+{q:"Combien de chambres possède le cœur humain ?",opts:["Deux chambres","Trois chambres","Quatre chambres","Cinq chambres"],rep:2,exp:"Le cœur a 4 chambres : 2 oreillettes et 2 ventricules."},
+{q:"Quelle est la plus petite unité vivante ?",opts:["L'atome","La molécule","La cellule","Le tissu"],rep:2,exp:"La cellule est la plus petite unité structurale et fonctionnelle du vivant."},
+{q:"Quel groupe sanguin est donneur universel ?",opts:["Groupe A positif","Groupe B positif","Groupe AB positif","Groupe O négatif"],rep:3,exp:"Le groupe O négatif est le donneur universel car sans antigènes A, B ou Rhésus."},
+{q:"Combien d'os possède le corps humain adulte ?",opts:["Cent six os","Deux cent six os","Trois cent six os","Quatre cent six os"],rep:1,exp:"Le corps humain adulte possède 206 os."}
+],
+Droit:[
+{q:"Qu'est-ce que la présomption d'innocence ?",opts:["Tout accusé est coupable","Tout accusé est innocent jusqu'à preuve du contraire","Le juge décide seul","La police juge"],rep:1,exp:"La présomption d'innocence : toute personne est innocente jusqu'à preuve de sa culpabilité."},
+{q:"Quel est l'âge légal pour voter au Togo ?",opts:["Seize ans","Dix-huit ans","Vingt et un ans","Vingt-cinq ans"],rep:1,exp:"Au Togo, l'âge légal pour voter est 18 ans selon la Constitution."},
+{q:"Qu'est-ce qu'un contrat ?",opts:["Un accord oral uniquement","Un accord de volontés créant des obligations","Une loi nationale","Une décision de justice"],rep:1,exp:"Un contrat est un accord de volontés entre parties créant des obligations juridiques."},
+{q:"Qu'est-ce que la Constitution ?",opts:["Un simple règlement","La loi fondamentale d'un État","Un traité international","Un décret présidentiel"],rep:1,exp:"La Constitution est la loi fondamentale qui organise l'État et garantit les droits des citoyens."},
+{q:"Qu'est-ce que la souveraineté nationale ?",opts:["Le pouvoir du président seul","Le pouvoir appartient au peuple","Le pouvoir de l'armée","Le pouvoir des juges"],rep:1,exp:"La souveraineté nationale signifie que le pouvoir suprême appartient à la nation."}
+],
+Economie:[
+{q:"Que signifie PIB ?",opts:["Produit Intérieur Brut","Prix Industriel de Base","Plan d'Investissement Bancaire","Production Industrielle Brute"],rep:0,exp:"Le PIB mesure la valeur totale des biens et services produits dans un pays."},
+{q:"Qu'est-ce que l'inflation ?",opts:["La baisse des prix","La hausse générale des prix","L'augmentation du chômage","La croissance économique"],rep:1,exp:"L'inflation est la hausse générale et durable des prix dans une économie."},
+{q:"Que représente l'offre en économie ?",opts:["Ce que les consommateurs achètent","Ce que les producteurs proposent à la vente","Le prix du marché","La demande des clients"],rep:1,exp:"L'offre représente la quantité de biens que les producteurs sont prêts à vendre."},
+{q:"Qu'est-ce que le chômage ?",opts:["Travailler à temps partiel","Personnes sans emploi qui en cherchent un","Refus de travailler","Retraite anticipée"],rep:1,exp:"Le chômage désigne les personnes sans emploi, disponibles et qui en recherchent activement un."},
+{q:"Qu'est-ce qu'une banque centrale ?",opts:["Une banque ordinaire","L'institution qui gère la politique monétaire","Une banque pour les pauvres","Une banque privée"],rep:1,exp:"La banque centrale gère la politique monétaire et supervise le système bancaire."}
+],
+Mathematiques:[
+{q:"Quelle est la valeur approximative de Pi ?",opts:["Deux virgule quatorze","Trois virgule quatorze","Quatre virgule quatorze","Cinq virgule quatorze"],rep:1,exp:"Pi vaut environ 3,14159. C'est le rapport entre la circonférence d'un cercle et son diamètre."},
+{q:"Combien font deux puissance dix ?",opts:["Vingt","Cent","Mille vingt-quatre","Deux mille"],rep:2,exp:"2^10 = 1024. Très utilisé en informatique."},
+{q:"Quelle est la formule de l'aire d'un cercle ?",opts:["Deux Pi r","Pi r au carré","Pi d","Deux Pi d"],rep:1,exp:"L'aire d'un cercle est A = πr² où r est le rayon."},
+{q:"Qu'est-ce qu'un nombre premier ?",opts:["Un nombre pair","Un nombre divisible uniquement par un et lui-même","Un nombre négatif","Un nombre décimal"],rep:1,exp:"Un nombre premier est divisible uniquement par 1 et lui-même. Exemple : 2, 3, 5, 7, 11."},
+{q:"Que vaut la somme des angles d'un triangle ?",opts:["Quatre-vingt dix degrés","Cent quatre-vingts degrés","Deux cent soixante degrés","Trois cent soixante degrés"],rep:1,exp:"La somme des angles d'un triangle est toujours égale à 180 degrés."}
+],
+CultureGenerale:[
+{q:"Quelle est la capitale du Togo ?",opts:["Sokodé","Kpalimé","Lomé","Atakpamé"],rep:2,exp:"Lomé est la capitale et la plus grande ville du Togo, située au bord de l'Atlantique."},
+{q:"En quelle année le Togo a-t-il obtenu son indépendance ?",opts:["En mil neuf cent cinquante-six","En mil neuf cent soixante","En mil neuf cent soixante-cinq","En mil neuf cent soixante-dix"],rep:1,exp:"Le Togo a obtenu son indépendance de la France le 27 avril 1960."},
+{q:"Combien de pays compose l'Afrique ?",opts:["Quarante-quatre pays","Cinquante-quatre pays","Soixante-quatre pays","Soixante-quatorze pays"],rep:1,exp:"L'Afrique compte 54 pays reconnus par l'Union Africaine."},
+{q:"Quel est le plus long fleuve du monde ?",opts:["Le Congo","L'Amazone","Le Nil","Le Mississippi"],rep:2,exp:"Le Nil est généralement considéré comme le plus long fleuve du monde avec environ 6 650 km."},
+{q:"Qui a inventé l'ampoule électrique ?",opts:["Albert Einstein","Thomas Edison","Nikola Tesla","Alexander Bell"],rep:1,exp:"Thomas Edison a inventé l'ampoule électrique pratique en 1879."}
+]
+};
+var filiere,qIndex,score,timer,tInterval;
+function choisirFiliere(f){
+filiere=f;qIndex=0;score=0;
+document.getElementById('accueil').style.display='none';
+document.getElementById('quiz').style.display='block';
+afficherQuestion();
+}
+function afficherQuestion(){
+var qs=Q[filiere];
+if(qIndex>=qs.length){afficherResultat();return;}
+var q=qs[qIndex];
+document.getElementById('qnum').textContent='Question '+(qIndex+1)+'/'+qs.length;
+document.getElementById('progressBar').style.width=(((qIndex)/qs.length)*100)+'%';
+document.getElementById('questionText').textContent=q.q;
+document.getElementById('explication').style.display='none';
+document.getElementById('btnSuivant').style.display='none';
+var div=document.getElementById('optionsDiv');
+div.innerHTML='';
+for(var i=0;i<q.opts.length;i++){
+var b=document.createElement('button');
+b.className='opt';
+b.textContent=q.opts[i];
+b.setAttribute('data-i',i);
+b.onclick=choisir;
+div.appendChild(b);
+}
+startTimer();
+}
+function startTimer(){
+clearInterval(tInterval);
+var t=30;
+document.getElementById('timer').textContent='⏱️ '+t+'s';
+tInterval=setInterval(function(){
+t--;
+document.getElementById('timer').textContent='⏱️ '+t+'s';
+if(t<=0){clearInterval(tInterval);timeOut();}
+},1000);
+}
+function timeOut(){
+var opts=document.querySelectorAll('.opt');
+var rep=Q[filiere][qIndex].rep;
+opts[rep].classList.add('correct');
+document.getElementById('explication').textContent='⏰ Temps écoulé ! '+Q[filiere][qIndex].exp;
+document.getElementById('explication').style.display='block';
+document.getElementById('btnSuivant').style.display='inline-block';
+}
+function choisir(e){
+clearInterval(tInterval);
+var i=parseInt(e.target.getAttribute('data-i'));
+var rep=Q[filiere][qIndex].rep;
+var opts=document.querySelectorAll('.opt');
+for(var j=0;j<opts.length;j++){opts[j].onclick=null;}
+if(i===rep){
+opts[i].classList.add('correct');
+score++;
+}else{
+opts[i].classList.add('wrong');
+opts[rep].classList.add('correct');
+}
+document.getElementById('explication').textContent='💡 '+Q[filiere][qIndex].exp;
+document.getElementById('explication').style.display='block';
+document.getElementById('btnSuivant').style.display='inline-block';
+}
+function suivant(){qIndex++;afficherQuestion();}
+function afficherResultat(){
+clearInterval(tInterval);
+document.getElementById('quiz').style.display='none';
+document.getElementById('resultat').style.display='block';
+var qs=Q[filiere];
+document.getElementById('scoreNum').textContent=score+'/'+qs.length;
+var pct=Math.round((score/qs.length)*100);
+var txt='';
+if(pct>=80){txt='🏆 Excellent ! Tu maîtrises bien ce sujet !';}
+else if(pct>=60){txt='👍 Bien ! Continue tes révisions !';}
+else if(pct>=40){txt='📚 Pas mal, mais il faut réviser davantage !';}
+else{txt='💪 Courage ! Relis tes cours et réessaie !';}
+document.getElementById('scoreTxt').textContent=txt;
+}
+function rejouer(){qIndex=0;score=0;document.getElementById('resultat').style.display='none';document.getElementById('quiz').style.display='block';afficherQuestion();}
+function retourAccueil(){clearInterval(tInterval);document.getElementById('resultat').style.display='none';document.getElementById('quiz').style.display='none';document.getElementById('accueil').style.display='block';}
+</script>
+</body></html>
